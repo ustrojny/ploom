@@ -9,6 +9,7 @@ For this homework, your tests should be able to run on the following shops, and 
 2. Localization Support: Handle market-specific text through a dedicated localization file.
 3. Reusable Test Fragments: Shared test logic and utilities in file tests.utils.ts for efficient and scalable test development
 4. Environment Control: Run tests for specific markets via environment variables
+5. Page Object Model (POM): Organizes the test logic by separating page-specific actions (like clicking buttons, checking visibility, etc.) into dedicated classes, making tests more maintainable and readable.
    
 ### Supported markets
 - UK  
