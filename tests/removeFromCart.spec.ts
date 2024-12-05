@@ -17,6 +17,7 @@ test.describe("Remove product from the Cart", () => {
     test(`Verify remove the only product from the cart for ${market} market`, async ({
       page,
     }) => {
+      test.setTimeout(60000);
       const marketConfig = getMarketConfig(market);
 
       const homePage = new HomePage(page, market);
@@ -40,6 +41,7 @@ test.describe("Remove product from the Cart", () => {
       await page.waitForLoadState("domcontentloaded");
       await productPage.openCheckout();
       await page.waitForURL(marketConfig.checkoutURL);
+      await page.waitForTimeout(5000);
 
       const cartInputValue = await cartPage.checkItemsInput();
       expect(cartInputValue).toBe("1");

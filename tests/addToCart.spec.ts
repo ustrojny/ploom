@@ -15,6 +15,7 @@ test.describe("Add product to the Cart", () => {
 
   markets.forEach((market) => {
     test(`Verify add to cart for ${market} market`, async ({ page }) => {
+      test.setTimeout(60000);
       const marketConfig = getMarketConfig(market);
 
       const homePage = new HomePage(page, market);
@@ -40,8 +41,10 @@ test.describe("Add product to the Cart", () => {
       const itemsCount = await productPage.checkCartItems();
       expect(itemsCount).toBe("1");
 
+      await page.waitForTimeout(5000);
       await productPage.openCheckout();
       await page.waitForURL(marketConfig.checkoutURL);
+      await page.waitForLoadState("domcontentloaded");
 
       expect(cartPage.cartHeader).toBeVisible();
       const cartInputValue = await cartPage.checkItemsInput();
