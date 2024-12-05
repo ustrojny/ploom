@@ -99,9 +99,45 @@ test.describe("Add product to the Cart", () => {
       console.log("broken links: ", brokenLinks);
       console.log("unsupported links:", unsupportedLinks);
       console.log("skipped links:", skippedLinks);
-      console.log("successfully verified links:", successfullyVerifiedLinks);
 
       expect(brokenLinks).toHaveLength(0);
+    });
+
+    test(`Verify broken images on the product page for ${market}`, async ({
+      page,
+    }) => {
+      const marketConfig = getMarketConfig(market);
+
+      const homePage = new HomePage(page, market);
+      const shopPage = new ShopPage(page, market);
+
+      await page.goto(marketConfig.baseURL);
+
+      await confirmCookieAndAge(page, homePage);
+
+      await openProductPageBySKU(
+        page,
+        marketConfig,
+        homePage,
+        shopPage,
+        marketConfig.sku_example
+      );
+
+      await page.waitForLoadState("domcontentloaded");
+      const images = page.locator("img");
+      const imageSrcs = await images.evaluateAll((images) =>
+        images.map((img) => (img as HTMLImageElement).src)
+      );
+
+      if (imageSrcs.length === 0) {
+        console.warn("No images found on the page");
+        return;
+      }
+
+      for (const src of imageSrcs) {
+        const response = await page.request.get(src);
+        expect.soft(response.status()).toBe(200);
+      }
     });
   });
 });
