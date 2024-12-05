@@ -7,6 +7,10 @@ export class CartPage extends BasePage {
   readonly itemsInput: Locator;
   readonly removeButton: Locator;
   readonly productName: Locator;
+  readonly removeModalTitle: Locator;
+  readonly confirmRemoveButton: Locator;
+  readonly emptyCartMessage: Locator;
+  readonly addOneMoreButton: Locator;
 
   constructor(page: Page, market: Market) {
     super(page, market);
@@ -21,9 +25,26 @@ export class CartPage extends BasePage {
     this.productName = this.page
       .getByTestId("regular-cart-list")
       .getByText(this.localization.productName, { exact: false });
+
+    this.removeModalTitle = this.page.getByText(
+      this.localization.removeProductModalTitle
+    );
+    this.confirmRemoveButton = this.page.getByRole("button", {
+      name: this.localization.confirmRemoveButton,
+    });
+    this.emptyCartMessage = this.page.getByText(
+      this.localization.emptyCartMessage
+    );
+    this.addOneMoreButton = this.page
+      .getByTestId("regular-cart-list")
+      .getByTestId("quantityPlus");
   }
 
   public async checkItemsInput() {
     return this.itemsInput.inputValue();
+  }
+
+  public async removeProduct() {
+    await this.removeButton.first().click();
   }
 }

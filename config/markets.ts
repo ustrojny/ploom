@@ -5,6 +5,7 @@ export const markets = {
     checkoutURL: "https://www.ploom.co.uk/en/cart-n-checkout#/",
     language: "en",
     sku_example: "ploom-x-advanced",
+    sku_example_2: "PLOOM-X-FRONT-PANEL",
   },
   PL: {
     baseURL: "https://www.ploom.pl/pl",
@@ -12,6 +13,7 @@ export const markets = {
     checkoutURL: "https://www.ploom.pl/pl/cart#/",
     language: "pl",
     sku_example: "16154414",
+    sku_example_2: "53990784",
   },
 };
 

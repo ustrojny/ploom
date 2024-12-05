@@ -4,6 +4,7 @@ import { HomePage } from "../pages/home-page";
 import { ShopPage } from "../pages/shop-page";
 import { ProductPage } from "../pages/product-page";
 import { CartPage } from "../pages/cart-page";
+import { addProductToCart, confirmCookieAndAge } from "./utils/test.utils";
 
 test.describe("Add product to the Cart", () => {
   const marketFromEnv = process.env.MARKET?.toUpperCase();
@@ -37,45 +38,21 @@ test.describe("Add product to the Cart", () => {
         homePage,
         shopPage,
         productPage,
-        cartPage
+        marketConfig.sku_example
       );
+
+      await page.waitForLoadState("domcontentloaded");
+      const itemsCount = await productPage.checkCartItems();
+      expect(itemsCount).toBe("1");
+
+      await productPage.openCheckout();
+      await page.waitForURL(marketConfig.checkoutURL);
+
+      expect(cartPage.cartHeader).toBeVisible();
+      const cartInputValue = await cartPage.checkItemsInput();
+      expect(cartInputValue).toBe("1");
+      expect(cartPage.removeButton).toBeVisible();
+      expect(cartPage.productName).toBeVisible();
     });
   });
 });
-
-export async function confirmCookieAndAge(page: Page, homePage: HomePage) {
-  await homePage.acceptCookies();
-  await homePage.confirmAge();
-}
-
-export async function addProductToCart(
-  page: Page,
-  marketConfig,
-  homePage: HomePage,
-  shopPage: ShopPage,
-  productPage: ProductPage,
-  cartPage: CartPage
-) {
-  await homePage.navigateToShop();
-  await page.waitForURL(marketConfig.shopURL);
-  await page.waitForLoadState("domcontentloaded");
-
-  await shopPage.openProductBySKU(marketConfig.sku_example);
-
-  expect(productPage.addToCartButton).toBeVisible();
-  await page.waitForTimeout(5000);
-  await productPage.clickAddToCartButton();
-
-  await page.waitForLoadState("domcontentloaded");
-  let itemsCount = await productPage.checkCartItems();
-  expect(itemsCount).toBe("1");
-
-  await productPage.openCheckout();
-  await page.waitForURL(marketConfig.checkoutURL);
-
-  expect(cartPage.cartHeader).toBeVisible();
-  const cartInputValue = await cartPage.checkItemsInput();
-  expect(cartInputValue).toBe("1");
-  expect(cartPage.removeButton).toBeVisible();
-  expect(cartPage.productName).toBeVisible();
-}

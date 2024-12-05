@@ -25,7 +25,7 @@ export class BasePage {
   }
 
   public async navigateToShop() {
-    await this.shopLink.click();
+    await this.shopLink.click({ force: true });
   }
 
   public async openCart() {
