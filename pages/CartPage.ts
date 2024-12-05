@@ -38,8 +38,23 @@ export class CartPage extends BasePage {
   }
 
   public async checkItemsInput() {
-    const itemsCount = await this.itemsInput.inputValue();
-    return itemsCount;
+    const timeout = 10000;
+    const interval = 100;
+    const startTime = Date.now();
+
+    while (Date.now() - startTime < timeout) {
+      try {
+        if (await this.itemsInput.isVisible()) {
+          const itemsCount = await this.itemsInput.inputValue();
+          return itemsCount;
+        }
+      } catch (error) {}
+      await this.page.waitForTimeout(interval);
+    }
+
+    throw new Error(
+      `Cart is still loading, items input was not found in ${timeout}ms.`
+    );
   }
 
   public async removeProduct() {
