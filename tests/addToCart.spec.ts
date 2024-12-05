@@ -42,6 +42,7 @@ test.describe("Add product to the Cart", () => {
       );
 
       await page.waitForLoadState("domcontentloaded");
+      await page.waitForTimeout(5000);
       const itemsCount = await productPage.checkCartItems();
       expect(itemsCount).toBe("1");
 

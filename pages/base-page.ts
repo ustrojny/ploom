@@ -8,6 +8,7 @@ export class BasePage {
   readonly cartButton: Locator;
   //   readonly cartHeader: Locator;
   readonly checkoutButton: Locator;
+  readonly cartItems: Locator;
 
   constructor(page: Page, market: keyof typeof localization) {
     this.page = page;
@@ -22,6 +23,7 @@ export class BasePage {
     this.checkoutButton = this.page.getByRole("button", {
       name: this.localization.checkoutButton,
     });
+    this.cartItems = this.page.locator(".mini-cart__icon-label");
   }
 
   public async navigateToShop() {
@@ -33,8 +35,7 @@ export class BasePage {
   }
 
   public async checkCartItems() {
-    const cartItems = this.page.locator(".IconLabeled-module-label-fmiDL");
-    const itemsCount = await cartItems.textContent();
+    const itemsCount = await this.cartItems.textContent();
     return itemsCount;
   }
 
