@@ -2,10 +2,25 @@ import { expect, Page } from "@playwright/test";
 import { HomePage } from "../../pages/home-page";
 import { ShopPage } from "../../pages/shop-page";
 import { ProductPage } from "../../pages/product-page";
+import { isValidMarket, Market } from "../../config/markets";
 
 export async function confirmCookieAndAge(page: Page, homePage: HomePage) {
   await homePage.acceptCookies();
   await homePage.confirmAge();
+}
+
+export async function openProductPageBySKU(
+  page: Page,
+  marketConfig,
+  homePage: HomePage,
+  shopPage: ShopPage,
+  sku: string
+) {
+  await homePage.navigateToShop();
+  await page.waitForURL(marketConfig.shopURL);
+  await page.waitForLoadState("domcontentloaded");
+
+  await shopPage.openProductBySKU(sku);
 }
 
 export async function addProductToCart(
@@ -23,16 +38,18 @@ export async function addProductToCart(
   await productPage.clickAddToCartButton();
 }
 
-export async function openProductPageBySKU(
-  page: Page,
-  marketConfig,
-  homePage: HomePage,
-  shopPage: ShopPage,
-  sku: string
-) {
-  await homePage.navigateToShop();
-  await page.waitForURL(marketConfig.shopURL);
-  await page.waitForLoadState("domcontentloaded");
+export function getMarketsToTest(): Market[] {
+  const marketFromEnv = process.env.MARKET?.toUpperCase();
+  const defaultMarket = "UK";
 
-  await shopPage.openProductBySKU(sku);
+  const markets: Market[] = isValidMarket(marketFromEnv)
+    ? [marketFromEnv]
+    : [defaultMarket];
+
+  if (marketFromEnv && !isValidMarket(marketFromEnv)) {
+    console.warn(
+      `Warning: Invalid market "${marketFromEnv}". Default testing for market: "${defaultMarket}".`
+    );
+  }
+  return markets;
 }

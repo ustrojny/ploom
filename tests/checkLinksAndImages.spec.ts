@@ -1,21 +1,15 @@
-import { test, expect, Page } from "@playwright/test";
-import { getMarketConfig, isValidMarket, Market } from "../config/markets";
+import { test, expect } from "@playwright/test";
+import { getMarketConfig } from "../config/markets";
 import { HomePage } from "../pages/home-page";
 import { ShopPage } from "../pages/shop-page";
-import { confirmCookieAndAge, openProductPageBySKU } from "./utils/test.utils";
+import {
+  confirmCookieAndAge,
+  getMarketsToTest,
+  openProductPageBySKU,
+} from "./utils/test.utils";
 
 test.describe("Add product to the Cart", () => {
-  const marketFromEnv = process.env.MARKET?.toUpperCase();
-
-  const markets: Market[] = isValidMarket(marketFromEnv)
-    ? [marketFromEnv]
-    : ["PL", "UK"];
-
-  if (marketFromEnv && !isValidMarket(marketFromEnv)) {
-    console.warn(
-      `Warning: Invalid market "${marketFromEnv}". Default testing for all allowed markets: "${markets}".`
-    );
-  }
+  const markets = getMarketsToTest();
 
   markets.forEach((market) => {
     test(`Verify broken links for product page for ${market} market`, async ({
