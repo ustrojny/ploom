@@ -1,5 +1,5 @@
 import { Locator, Page } from "@playwright/test";
-import { BasePage } from "./base-page";
+import { BasePage } from "./BasePage";
 import { Market } from "../config/markets";
 
 export class CartPage extends BasePage {
@@ -38,7 +38,8 @@ export class CartPage extends BasePage {
   }
 
   public async checkItemsInput() {
-    return this.itemsInput.inputValue();
+    const itemsCount = await this.itemsInput.inputValue();
+    return itemsCount;
   }
 
   public async removeProduct() {

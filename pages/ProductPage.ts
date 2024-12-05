@@ -1,5 +1,5 @@
 import { Locator, Page } from "@playwright/test";
-import { BasePage } from "./base-page";
+import { BasePage } from "./BasePage";
 import { Market } from "../config/markets";
 
 export class ProductPage extends BasePage {
@@ -13,6 +13,6 @@ export class ProductPage extends BasePage {
   }
 
   public async clickAddToCartButton() {
-    await this.addToCartButton.click({ force: true });
+    await this.addToCartButton.click();
   }
 }

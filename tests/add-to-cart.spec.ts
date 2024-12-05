@@ -1,22 +1,20 @@
 import { test, expect } from "@playwright/test";
 import { getMarketConfig } from "../config/markets";
-import { HomePage } from "../pages/home-page";
-import { ShopPage } from "../pages/shop-page";
-import { ProductPage } from "../pages/product-page";
-import { CartPage } from "../pages/cart-page";
+import { HomePage } from "../pages/HomePage";
+import { ShopPage } from "../pages/ShopPage";
+import { ProductPage } from "../pages/ProductPage";
+import { CartPage } from "../pages/CartPage";
 import {
   addProductToCart,
   confirmCookieAndAge,
   getMarketsToTest,
 } from "./utils/test.utils";
 
-test.describe("Remove product from the Cart", () => {
+test.describe("Add product to the Cart", () => {
   const markets = getMarketsToTest();
 
   markets.forEach((market) => {
-    test(`Verify remove the only product from the cart for ${market} market`, async ({
-      page,
-    }) => {
+    test(`Verify add to cart for ${market} market`, async ({ page }) => {
       test.setTimeout(60000);
       const marketConfig = getMarketConfig(market);
 
@@ -39,23 +37,22 @@ test.describe("Remove product from the Cart", () => {
       );
 
       await page.waitForLoadState("domcontentloaded");
+      await page.waitForTimeout(5000);
+
+      const itemsCount = await productPage.checkCartItems();
+      expect(itemsCount).toBe("1");
+
+      await page.waitForTimeout(5000);
       await productPage.openCheckout();
       await page.waitForURL(marketConfig.checkoutURL);
-      await page.waitForTimeout(6000);
+      await page.waitForLoadState("domcontentloaded");
 
+      expect(cartPage.cartHeader).toBeVisible();
+      await page.waitForTimeout(6000);
       const cartInputValue = await cartPage.checkItemsInput();
       expect(cartInputValue).toBe("1");
-
       expect(cartPage.removeButton).toBeVisible();
-      await cartPage.removeProduct();
-      expect(cartPage.removeModalTitle).toBeVisible();
-      await cartPage.confirmRemoveButton.click();
-      await page.waitForTimeout(3000);
-      expect(cartPage.emptyCartMessage).toBeVisible();
+      expect(cartPage.productName).toBeVisible();
     });
-
-    // Additional test cases which might be added:
-    // Verify remove multiple units of the same product from the cart - very similar to implemented scenario
-    // Verify remove 1 of 2 different products from the cart
   });
 });

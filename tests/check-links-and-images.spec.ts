@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { getMarketConfig } from "../config/markets";
-import { HomePage } from "../pages/home-page";
-import { ShopPage } from "../pages/shop-page";
+import { HomePage } from "../pages/HomePage";
+import { ShopPage } from "../pages/ShopPage";
 import {
   confirmCookieAndAge,
   getMarketsToTest,

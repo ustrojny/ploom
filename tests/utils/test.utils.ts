@@ -1,7 +1,7 @@
 import { expect, Page } from "@playwright/test";
-import { HomePage } from "../../pages/home-page";
-import { ShopPage } from "../../pages/shop-page";
-import { ProductPage } from "../../pages/product-page";
+import { HomePage } from "../../pages/HomePage";
+import { ShopPage } from "../../pages/ShopPage";
+import { ProductPage } from "../../pages/ProductPage";
 import { isValidMarket, Market } from "../../config/markets";
 
 export async function confirmCookieAndAge(page: Page, homePage: HomePage) {

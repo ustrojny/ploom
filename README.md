@@ -30,7 +30,7 @@ npx playwright test
 
 ### Run all tests for specific market
 ```
-MARKET=PL npx playwright test
+MARKET=UK npx playwright test
 ```
 
 ### Run specific test for a specific market in headed mode
@@ -40,3 +40,6 @@ MARKET=UK npx playwright test addToCart.spec.ts --headed
 
 ### Place for improvements
 Some pages have long load times, and standard Playwright waiting methods were insufficient. To address this, additional explicit waits were used, though they are not ideal. Potential improvements include: optimizing page performance, dynamically adjusting timeout values for slow pages, collaborating with developers to resolve server or frontend bottlenecks, breaking down complex tests into smaller scenarios.
+
+### Comments in the code
+I generally avoid adding comments about the code itself, as I strive to write clean and self-explanatory code. However, a few comments have been included, focusing on potential improvements rather than the code's content.
