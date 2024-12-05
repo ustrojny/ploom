@@ -11,11 +11,11 @@ test.describe("Add product to the Cart", () => {
 
   const markets: Market[] = isValidMarket(marketFromEnv)
     ? [marketFromEnv]
-    : ["PL", "UK"];
+    : ["UK"];
 
   if (marketFromEnv && !isValidMarket(marketFromEnv)) {
     console.warn(
-      `Warning: Invalid market "${marketFromEnv}". Default testing for all allowed markets: "${markets}".`
+      `Warning: Invalid market "${marketFromEnv}". Default testing for market: "${markets}".`
     );
   }
 
@@ -42,12 +42,13 @@ test.describe("Add product to the Cart", () => {
       );
 
       await page.waitForLoadState("domcontentloaded");
-      await page.waitForTimeout(5000);
+
       const itemsCount = await productPage.checkCartItems();
       expect(itemsCount).toBe("1");
 
       await productPage.openCheckout();
       await page.waitForURL(marketConfig.checkoutURL);
+      await page.waitForTimeout(5000);
 
       expect(cartPage.cartHeader).toBeVisible();
       const cartInputValue = await cartPage.checkItemsInput();

@@ -35,9 +35,6 @@ export class CartPage extends BasePage {
     this.emptyCartMessage = this.page.getByText(
       this.localization.emptyCartMessage
     );
-    this.addOneMoreButton = this.page
-      .getByTestId("regular-cart-list")
-      .getByTestId("quantityPlus");
   }
 
   public async checkItemsInput() {

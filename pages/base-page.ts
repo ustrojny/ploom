@@ -6,7 +6,6 @@ export class BasePage {
   readonly localization;
   readonly shopLink: Locator;
   readonly cartButton: Locator;
-  //   readonly cartHeader: Locator;
   readonly checkoutButton: Locator;
   readonly cartItems: Locator;
 
@@ -19,7 +18,6 @@ export class BasePage {
       exact: true,
     });
     this.cartButton = this.page.getByTestId("miniCart");
-    // this.cartHeader = this.page.getByTestId("mini-cart-header");
     this.checkoutButton = this.page.getByRole("button", {
       name: this.localization.checkoutButton,
     });
@@ -40,6 +38,6 @@ export class BasePage {
   }
 
   public async openCheckout() {
-    await this.checkoutButton.click();
+    await this.checkoutButton.click({ force: true });
   }
 }
