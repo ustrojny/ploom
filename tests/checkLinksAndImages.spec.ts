@@ -42,16 +42,10 @@ test.describe("Add product to the Cart", () => {
 
       const uniqueLinks = [...new Set(links)];
 
-      console.log(uniqueLinks);
       const brokenLinks: string[] = [];
       const unsupportedLinks: string[] = [];
       const skippedLinks: string[] = [];
       const successfullyVerifiedLinks: string[] = [];
-
-      if (uniqueLinks.length === 0) {
-        console.warn("No links found on the page");
-        return;
-      }
 
       for (const link of uniqueLinks) {
         if (!link) {

@@ -12,7 +12,7 @@ export class BasePage {
   constructor(page: Page, market: keyof typeof localization) {
     this.page = page;
     this.localization = getLocalization(market);
-    // I can use this.page.locator('[data-testid="header"]' but I prefer to use semantic meaningful locators
+    // I can use this.page.locator('[data-testid="headerItem-1"]' but I prefer to use semantic meaningful locators
     this.shopLink = this.page.getByRole("navigation").getByRole("link", {
       name: this.localization.shopLinkText,
       exact: true,
