@@ -12,11 +12,41 @@ export class ShopPage extends BasePage {
     this.allSKUs = this.page.locator("[data-testid='all_skus']");
   }
 
+  //   public async openProductBySKU(productSKU: string) {
+  //     await this.seeAllProducts.scrollIntoViewIfNeeded();
+
+  //     await this.seeAllProducts.first().click({ force: true });
+  //     await this.allSKUs.waitFor({ state: "visible" });
+
+  //     const productLink = this.page.locator(`[data-sku="${productSKU}"]`);
+  //     // await this.allSKUs.waitFor({ state: "visible", timeout: 5000 });
+  //     await productLink.click({ force: true });
+  //   }
+
+  // iterative approach with controlled timeout due to problems with default waitFor elements and content loading
   public async openProductBySKU(productSKU: string) {
     await this.seeAllProducts.first().click({ force: true });
+    // change this to close menu
     await this.allSKUs.waitFor({ state: "visible" });
 
-    const productLink = this.page.locator(`[data-sku="${productSKU}"]`);
-    await productLink.click({ force: true });
+    const productLinkSelector = `[data-sku="${productSKU}"]`;
+    const timeout = 8000;
+    const interval = 100;
+    const startTime = Date.now();
+
+    while (Date.now() - startTime < timeout) {
+      try {
+        const productLink = this.page.locator(productLinkSelector);
+        if (await productLink.isVisible()) {
+          await productLink.click({ force: true });
+          return;
+        }
+      } catch (error) {}
+      await this.page.waitForTimeout(interval);
+    }
+
+    throw new Error(
+      `Element with SKU "${productSKU}" was not found in ${timeout}ms.`
+    );
   }
 }
