@@ -42,7 +42,6 @@ test.describe("Add product to the Cart", () => {
 
       await productPage.openCheckout();
       await page.waitForURL(marketConfig.checkoutURL);
-      await page.waitForTimeout(5000);
 
       expect(cartPage.cartHeader).toBeVisible();
       const cartInputValue = await cartPage.checkItemsInput();
