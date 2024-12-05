@@ -41,7 +41,7 @@ test.describe("Remove product from the Cart", () => {
       await page.waitForLoadState("domcontentloaded");
       await productPage.openCheckout();
       await page.waitForURL(marketConfig.checkoutURL);
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(6000);
 
       const cartInputValue = await cartPage.checkItemsInput();
       expect(cartInputValue).toBe("1");

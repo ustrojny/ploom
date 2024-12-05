@@ -40,7 +40,7 @@ export async function addProductToCart(
 
 export function getMarketsToTest(): Market[] {
   const marketFromEnv = process.env.MARKET?.toUpperCase();
-  const defaultMarket = "UK";
+  const defaultMarket: Market = "UK";
 
   const markets: Market[] = isValidMarket(marketFromEnv)
     ? [marketFromEnv]
